@@ -5,16 +5,18 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { NotesProvider } from './context/notes-context';
+import { ThemeProvider } from './context/theme-context';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <NotesProvider>
-        <App />
-      </NotesProvider>
-
-    </BrowserRouter>
-
+    <ThemeProvider>
+      <BrowserRouter>
+        <NotesProvider>
+          <App />
+        </NotesProvider>
+      </BrowserRouter>
+    </ThemeProvider>
   </React.StrictMode>
 );
 

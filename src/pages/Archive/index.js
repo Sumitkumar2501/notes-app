@@ -1,35 +1,46 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { Navbar } from '../../components/Navbar';
 import { SideBar } from '../../components/Sidebar';
+import { MobileNav } from '../../components/MobileNav';
 import { useNotes } from "../../context/notes-context";
 import { NotesCard } from "../../components/NotesCard";
 import { EmptyState } from "../../components/EmptyState";
+import { SortDropdown } from "../../components/SortDropdown";
 import { Archive as ArchiveIcon } from "lucide-react";
+import { sortNotes } from "../../utils/sortNotes";
 
 export const Archive = () => {
     const { archive, searchQuery } = useNotes();
+    const [sortBy, setSortBy] = useState('newest');
 
     const archiveNotes = archive?.filter(note => 
         (note.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
          note.text.toLowerCase().includes(searchQuery.toLowerCase()))
     );
 
+    const sortedArchiveNotes = sortNotes(archiveNotes, sortBy);
+
     return (
         <Fragment>
             <Navbar />
             <main className="flex">
                 <SideBar />
-                <div className="flex-1 p-6 md:p-10 overflow-y-auto h-[calc(100vh-73px)]">
+                <div className="flex-1 p-4 sm:p-6 md:p-8 lg:p-10 overflow-y-auto h-[calc(100vh-73px)] md:h-[calc(100vh-73px)] pb-20 md:pb-0" style={{ backgroundColor: 'var(--bg-primary)' }}>
                     <div className="max-w-7xl mx-auto">
-                        <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                            <ArchiveIcon className="text-blue-500" />
-                            Archived Notes
-                        </h2>
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 sm:mb-8">
+                            <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
+                                <ArchiveIcon className="text-blue-500 w-5 sm:w-6 h-5 sm:h-6" />
+                                Archived Notes
+                            </h2>
+                            {sortedArchiveNotes?.length > 0 && (
+                                <SortDropdown sortBy={sortBy} onSortChange={setSortBy} />
+                            )}
+                        </div>
                         
-                        {archiveNotes?.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-slide-up">
-                                {archiveNotes.map(({ id, title, text, isPinned }) => (
-                                    <NotesCard key={id} id={id} title={title} text={text} isPinned={isPinned} />
+                        {sortedArchiveNotes?.length > 0 ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6 md:gap-8 lg:gap-10 animate-slide-up auto-rows-max">
+                                {sortedArchiveNotes.map(({ id, title, text, isPinned, createdAt, updatedAt }) => (
+                                    <NotesCard key={id} id={id} title={title} text={text} isPinned={isPinned} createdAt={createdAt} updatedAt={updatedAt} />
                                 ))}
                             </div>
                         ) : (
@@ -38,6 +49,7 @@ export const Archive = () => {
                     </div>
                 </div>
             </main>
+            <MobileNav />
         </Fragment>
     )
 }

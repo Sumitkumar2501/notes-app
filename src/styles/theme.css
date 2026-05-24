@@ -1,0 +1,134 @@
+/* Theme CSS Variables */
+
+:root[data-theme="light"] {
+    /* Light Mode Colors - Soft, Warm & Modern */
+    --bg-primary: #fdfbf9;
+    --bg-secondary: #f6f3ef;
+    --bg-tertiary: #edeae4;
+    --bg-hover: #e5e2db;
+    
+    --text-primary: #1c1917;
+    --text-secondary: #44403c;
+    --text-tertiary: #78716c;
+    --text-muted: #a8a29e;
+    
+    --border-primary: #e7e5e4;
+    --border-secondary: #d6d3d1;
+    
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.06);
+    --shadow-xl: 0 20px 40px -8px rgba(0, 0, 0, 0.08);
+    
+    --accent-color: #5e4a41;
+    --accent-hover: #4a382f;
+    --accent-light: #f5ede5;
+    
+    --card-bg: #ffffff;
+    --input-bg: #fcfaf8;
+    --input-border: #e7e5e4;
+    
+    --glass-bg: rgba(253, 251, 249, 0.7);
+    --glass-border: rgba(231, 229, 228, 0.4);
+    
+    --primary-gradient: linear-gradient(135deg, #5e4a41 0%, #7d6559 100%);
+    --card-gradient: linear-gradient(180deg, #ffffff 0%, #fdfbf9 100%);
+    
+    --toast-bg: #1c1917;
+    --toast-text: #fdfbf9;
+}
+
+:root[data-theme="dark"] {
+    /* Dark Mode Colors */
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    --bg-hover: #475569;
+    
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-tertiary: #94a3b8;
+    --text-muted: #64748b;
+    
+    --border-primary: #334155;
+    --border-secondary: #475569;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    
+    --accent-color: #818cf8;
+    --accent-hover: #a5b4fc;
+    --accent-light: #312e81;
+    
+    --card-bg: #1e293b;
+    --input-bg: #334155;
+    --input-border: #475569;
+    
+    --glass-bg: rgba(15, 23, 42, 0.6);
+    --glass-border: rgba(51, 65, 85, 0.3);
+    
+    --toast-bg: #f1f5f9;
+    --toast-text: #0f172a;
+}
+
+/* Smooth Theme Transitions - Optimized */
+/* Only apply transitions to specific properties that won't cause heavy repaints */
+html {
+    transition: background-color 0.3s ease-in-out;
+}
+
+body {
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+/* Core UI elements - smooth color transitions only */
+header, main, section, div, article {
+    transition: background-color 0.3s ease-in-out, 
+                color 0.3s ease-in-out, 
+                border-color 0.3s ease-in-out;
+}
+
+/* Input elements */
+input, textarea, select {
+    transition: background-color 0.3s ease-in-out, 
+                color 0.3s ease-in-out, 
+                border-color 0.3s ease-in-out;
+}
+
+/* Button elements */
+button {
+    transition: background-color 0.3s ease-in-out, 
+                color 0.3s ease-in-out, 
+                border-color 0.3s ease-in-out,
+                box-shadow 0.3s ease-in-out;
+}
+
+/* Card elements */
+.glass-card {
+    transition: background-color 0.3s ease-in-out, 
+                color 0.3s ease-in-out, 
+                border-color 0.3s ease-in-out,
+                box-shadow 0.3s ease-in-out;
+}
+
+/* Prevent transition on specific animated elements */
+.animate-fade-in,
+.animate-slide-up,
+.animate-scale-in {
+    transition: none !important;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}

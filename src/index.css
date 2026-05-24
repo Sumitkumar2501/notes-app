@@ -1,34 +1,178 @@
+@import './styles/theme.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    @apply bg-gradient-to-br from-indigo-50 via-purple-50 to-sky-100 text-slate-800 antialiased selection:bg-indigo-300 selection:text-indigo-900 min-h-screen background-animate;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    @apply antialiased min-h-screen selection:text-white;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    will-change: auto;
+  }
+  
+  /* Light mode background - Static for performance */
+  :root[data-theme="light"] body {
+    background: linear-gradient(135deg, #fdfbf9 0%, #f6f3ef 100%);
+    background-attachment: fixed;
+  }
+  
+  /* Dark mode background - Static for performance */
+  :root[data-theme="dark"] body {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    background-attachment: fixed;
+  }
+  
+  /* Selection colors */
+  :root[data-theme="light"]::selection {
+    @apply bg-yellow-300 text-slate-900;
+  }
+  
+  :root[data-theme="dark"]::selection {
+    @apply bg-yellow-300 text-slate-900;
   }
 }
 
 @layer utilities {
-  .background-animate {
-    background-size: 400%;
-    animation: gradientShift 15s ease infinite;
-  }
-
-  @keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-
   .glass {
-    @apply bg-white/60 backdrop-blur-xl border border-white/60 shadow-lg shadow-indigo-100/50;
+    @apply backdrop-blur-xl border shadow-lg transition-all duration-300;
+    background-color: var(--glass-bg);
+    border-color: var(--glass-border);
   }
   
   .glass-card {
-    @apply bg-white/80 backdrop-blur-lg border border-white/80 shadow-[0_8px_30px_rgb(79,70,229,0.08)] rounded-xl transition-all duration-300 hover:shadow-[0_20px_40px_rgb(79,70,229,0.15)] hover:-translate-y-1.5;
+    @apply border rounded-xl hover:shadow-lg hover:-translate-y-0.5;
+    background-color: var(--card-bg);
+    border-color: var(--border-primary);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-md);
+    will-change: transform, box-shadow;
+    transition: background-color 0.3s ease-in-out, 
+                color 0.3s ease-in-out, 
+                border-color 0.3s ease-in-out,
+                box-shadow 0.3s ease-in-out,
+                transform 0.3s ease-in-out;
+  }
+  
+  .glass-card:hover {
+    box-shadow: var(--shadow-lg);
   }
 
-  /* Custom Scrollbar */
+  /* Smooth backdrop blur */
+  .backdrop-blur-md {
+    transition: backdrop-filter 0.3s ease-in-out;
+  }
+
+  /* Animations - Optimized */
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.25s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.35s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* Modal animations */
+  @keyframes modal-fade-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  @keyframes modal-fade-out {
+    from {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.95) translateY(-20px);
+    }
+  }
+
+  @keyframes backdrop-fade-in {
+    from {
+      opacity: 0;
+      backdrop-filter: blur(0px);
+    }
+    to {
+      opacity: 1;
+      backdrop-filter: blur(8px);
+    }
+  }
+
+  @keyframes backdrop-fade-out {
+    from {
+      opacity: 1;
+      backdrop-filter: blur(8px);
+    }
+    to {
+      opacity: 0;
+      backdrop-filter: blur(0px);
+    }
+  }
+
+  /* Optimized transitions for interactive elements */
+  input, textarea, button, select {
+    @apply transition-all duration-200;
+  }
+
+  button {
+    @apply active:scale-95;
+  }
+
+  /* Focus ring styling */
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+  }
+
+  /* Mobile touch optimization */
+  @media (hover: none) {
+    button:hover {
+      opacity: 0.9;
+    }
+  }
+
+  /* Custom Scrollbar - Optimized */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -39,10 +183,12 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-slate-300 rounded-full;
+    @apply rounded-full;
+    background-color: var(--border-primary);
+    transition: background-color 0.25s ease-in-out;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-slate-400;
+    background-color: var(--border-secondary);
   }
 }

@@ -1,15 +1,19 @@
 import { Navbar } from "../../components/Navbar";
 import { SideBar } from "../../components/Sidebar";
+import { MobileNav } from "../../components/MobileNav";
 import { NotesCard } from "../../components/NotesCard";
 import { EmptyState } from "../../components/EmptyState";
-import { Fragment } from 'react';
+import { SortDropdown } from "../../components/SortDropdown";
+import { Fragment, useState } from 'react';
 import { useNotes } from "../../context/notes-context";
 import { Plus } from "lucide-react";
 import toast from "react-hot-toast";
+import { sortNotes } from "../../utils/sortNotes";
 
 export const Home = () => {
 
     const { title, text, notes, searchQuery, notesDispatch } = useNotes();
+    const [sortBy, setSortBy] = useState('newest');
 
     const onTitleChange = (e) => {
         notesDispatch({ type: 'TITLE', payload: e.target.value })
@@ -31,42 +35,45 @@ export const Home = () => {
         note.text.toLowerCase().includes(searchQuery.toLowerCase())
     ) || [];
 
-    const pinnedNotes = filteredNotes.filter(({ isPinned }) => isPinned);
-    const otherNotes = filteredNotes.filter(({ isPinned }) => !isPinned);
+    const pinnedNotes = sortNotes(filteredNotes.filter(({ isPinned }) => isPinned), sortBy);
+    const otherNotes = sortNotes(filteredNotes.filter(({ isPinned }) => !isPinned), sortBy);
 
     return (
         <Fragment>
             <Navbar />
             <main className="flex">
                 <SideBar />
-                <div className="flex-1 p-6 md:p-10 overflow-y-auto h-[calc(100vh-73px)]">
+                <div className="flex-1 p-4 sm:p-6 md:p-8 lg:p-10 overflow-y-auto h-[calc(100vh-73px)] md:h-[calc(100vh-73px)] pb-20 md:pb-0" style={{ backgroundColor: 'var(--bg-primary)' }}>
                     <div className="max-w-7xl mx-auto flex flex-col items-center">
                         
                         {/* Note Input Area */}
-                        <div className="w-full max-w-2xl bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden mb-12 transition-all duration-300 focus-within:shadow-md focus-within:border-primary/30">
+                        <div className="w-full max-w-2xl rounded-xl sm:rounded-2xl shadow-sm md:shadow-md border overflow-hidden mb-8 sm:mb-10 md:mb-12 transition-all duration-300 focus-within:shadow-md md:focus-within:shadow-lg focus-within:border-opacity-80" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--border-primary)', boxShadow: 'var(--shadow-md)' }}>
                             <input 
                                 id="note-title" 
                                 name="title" 
                                 value={title} 
                                 onChange={onTitleChange}
-                                className="w-full p-4 text-lg font-semibold text-slate-800 placeholder-slate-400 focus:outline-none"
-                                placeholder="Title" 
+                                className="w-full p-3 sm:p-4 text-base sm:text-lg font-semibold focus:outline-none placeholder-opacity-70 transition-colors duration-200"
+                                placeholder="Title"
+                                style={{ backgroundColor: 'var(--card-bg)', color: 'var(--text-primary)', borderBottom: `1px solid var(--border-primary)` }}
                             />
                             <textarea 
                                 id="note-text" 
                                 name="text" 
                                 value={text} 
                                 onChange={onTextChange}
-                                className="w-full p-4 pt-0 min-h-[100px] text-slate-600 placeholder-slate-400 focus:outline-none resize-none"
-                                placeholder="Take a note..." 
+                                className="w-full p-3 sm:p-4 min-h-[80px] sm:min-h-[100px] focus:outline-none resize-none placeholder-opacity-70 transition-colors duration-200"
+                                placeholder="Take a note..."
+                                style={{ backgroundColor: 'var(--card-bg)', color: 'var(--text-secondary)' }}
                             />
-                            <div className="flex justify-end p-3 bg-slate-50/50 border-t border-slate-100">
+                            <div className="flex justify-end p-2 sm:p-3 border-t" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-primary)' }}>
                                 <button 
                                     disabled={!title?.trim()} 
                                     onClick={onAddClick} 
-                                    className="flex items-center gap-2 px-5 py-2 bg-primary text-white font-medium rounded-full hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow"
+                                    className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 text-white font-medium text-sm sm:text-base rounded-full hover:opacity-85 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md active:scale-95"
+                                    style={{ backgroundColor: 'var(--accent-color)' }}
                                 >
-                                    <Plus size={18} />
+                                    <Plus size={16} className="sm:w-[18px] sm:h-[18px]" />
                                     <span>Add Note</span>
                                 </button>
                             </div>
@@ -81,24 +88,29 @@ export const Home = () => {
                                     <EmptyState message="Notes you add appear here" />
                                 )
                             ) : (
-                                <div className="flex flex-col gap-10">
+                                <div className="flex flex-col gap-6 sm:gap-8 md:gap-10">
+                                    {/* Sort Dropdown */}
+                                    <div className="flex justify-end px-1">
+                                        <SortDropdown sortBy={sortBy} onSortChange={setSortBy} />
+                                    </div>
+
                                     {pinnedNotes.length > 0 && (
-                                        <section className="animate-slide-up" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
-                                            <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4 ml-1">Pinned</h3>
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                                                {pinnedNotes.map(({ id, title, text, isPinned }) => (
-                                                    <NotesCard key={id} id={id} title={title} text={text} isPinned={isPinned} />
+                                        <section className="animate-slide-up w-full" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
+                                            <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-wider mb-4 sm:mb-5 md:mb-6 ml-1" style={{ color: 'var(--text-tertiary)' }}>Pinned</h3>
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6 md:gap-8 lg:gap-10 auto-rows-max">
+                                                {pinnedNotes.map(({ id, title, text, isPinned, createdAt, updatedAt }) => (
+                                                    <NotesCard key={id} id={id} title={title} text={text} isPinned={isPinned} createdAt={createdAt} updatedAt={updatedAt} />
                                                 ))}
                                             </div>
                                         </section>
                                     )}
                                     
                                     {otherNotes.length > 0 && (
-                                        <section className="animate-slide-up" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-                                            {pinnedNotes.length > 0 && <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4 ml-1">Others</h3>}
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                                                {otherNotes.map(({ id, title, text, isPinned }) => (
-                                                    <NotesCard key={id} id={id} title={title} text={text} isPinned={isPinned} />
+                                        <section className="animate-slide-up w-full" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
+                                            {pinnedNotes.length > 0 && <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-wider mb-4 sm:mb-5 md:mb-6 ml-1" style={{ color: 'var(--text-tertiary)' }}>Others</h3>}
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6 md:gap-8 lg:gap-10 auto-rows-max">
+                                                {otherNotes.map(({ id, title, text, isPinned, createdAt, updatedAt }) => (
+                                                    <NotesCard key={id} id={id} title={title} text={text} isPinned={isPinned} createdAt={createdAt} updatedAt={updatedAt} />
                                                 ))}
                                             </div>
                                         </section>
@@ -110,6 +122,7 @@ export const Home = () => {
                     </div>
                 </div>
             </main>
+            <MobileNav />
         </Fragment>
     )
 }

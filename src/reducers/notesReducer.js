@@ -7,9 +7,10 @@ export const notesReducer = (state, {type ,payload})=> {
         case 'TEXT':
             return{ ...state, text: payload }
         case 'ADD_NOTE':
+            const now = new Date().toISOString();
             return{
                 ...state,
-                notes: [...state.notes, {text:state.text, title: state.title, id: uuid(), isPinned:false}]
+                notes: [...state.notes, {text:state.text, title: state.title, id: uuid(), isPinned:false, createdAt: now, updatedAt: now}]
             }
         case 'CLEAR_INPUT':
             return{
@@ -20,14 +21,14 @@ export const notesReducer = (state, {type ,payload})=> {
         case 'PIN':
             return{
                 ...state,
-                notes: state.notes.map(note => note.id === payload.id ? { ...note, isPinned: true } : note),
-                archive: state.archive.map(note => note.id === payload.id ? { ...note, isPinned: true } : note)
+                notes: state.notes.map(note => note.id === payload.id ? { ...note, isPinned: true, updatedAt: new Date().toISOString() } : note),
+                archive: state.archive.map(note => note.id === payload.id ? { ...note, isPinned: true, updatedAt: new Date().toISOString() } : note)
             }
         case 'UNPIN':
             return{
                 ...state,
-                notes: state.notes.map(note => note.id === payload.id ? { ...note, isPinned: false } : note),
-                archive: state.archive.map(note => note.id === payload.id ? { ...note, isPinned: false } : note)
+                notes: state.notes.map(note => note.id === payload.id ? { ...note, isPinned: false, updatedAt: new Date().toISOString() } : note),
+                archive: state.archive.map(note => note.id === payload.id ? { ...note, isPinned: false, updatedAt: new Date().toISOString() } : note)
             }
         case 'ADD_TO_ARCHIVE':
             return{
@@ -57,12 +58,26 @@ export const notesReducer = (state, {type ,payload})=> {
             return {
                 ...state,
                 trash: state.trash.filter(n => n.id !== payload.id),
-                notes: [...state.notes, restNote]
+                notes: [...state.notes, { ...restNote, updatedAt: new Date().toISOString(), createdAt: restNote.createdAt || new Date().toISOString() }]
             }
         case 'DELETE_PERMANENTLY':
             return {
                 ...state,
                 trash: state.trash.filter(n => n.id !== payload.id)
+            }
+        case 'EDIT_NOTE':
+            return {
+                ...state,
+                notes: state.notes.map(note => 
+                    note.id === payload.id 
+                        ? { ...note, title: payload.title, text: payload.text, updatedAt: new Date().toISOString() } 
+                        : note
+                ),
+                archive: state.archive.map(note => 
+                    note.id === payload.id 
+                        ? { ...note, title: payload.title, text: payload.text, updatedAt: new Date().toISOString() } 
+                        : note
+                )
             }
         case 'SET_STATE':
             return {
