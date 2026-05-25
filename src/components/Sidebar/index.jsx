@@ -11,7 +11,7 @@ const SideBarComponent = () => {
     ];
 
     return (
-        <aside className='hidden md:flex flex-col gap-1 w-64 h-[calc(100vh-73px)] p-3 sticky top-[73px] overflow-y-auto' style={{ backgroundColor: 'var(--bg-secondary)', transition: 'background-color 0.3s ease-in-out' }}>
+        <aside className='hidden md:flex flex-col gap-1 w-64 h-[calc(100vh-73px)] p-3 sticky top-[73px] overflow-y-auto safe-area-inset-left' style={{ backgroundColor: 'var(--bg-secondary)', transition: 'background-color 0.3s ease-in-out', paddingLeft: 'max(12px, calc(12px + env(safe-area-inset-left)))' }}>
             {navItems.map((item) => (
                 <NavLink 
                     key={item.to}

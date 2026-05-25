@@ -16,7 +16,9 @@ const MobileNavComponent = () => {
             style={{
                 backgroundColor: 'var(--bg-secondary)',
                 borderColor: 'var(--border-primary)',
-                transition: 'background-color 0.3s ease-in-out, border-color 0.3s ease-in-out'
+                transition: 'background-color 0.3s ease-in-out, border-color 0.3s ease-in-out',
+                paddingBottom: 'max(env(safe-area-inset-bottom), 0px)',
+                boxShadow: 'var(--shadow-lg)',
             }}
         >
             <div className="flex items-center justify-around h-16 sm:h-20">

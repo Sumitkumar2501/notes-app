@@ -20,7 +20,7 @@ export const Trash = () => {
             <Navbar />
             <main className="flex">
                 <SideBar />
-                <div className="flex-1 p-4 sm:p-6 md:p-8 lg:p-10 overflow-y-auto h-[calc(100vh-73px)] md:h-[calc(100vh-73px)] pb-20 md:pb-0" style={{ backgroundColor: 'var(--bg-primary)' }}>
+                <div className="flex-1 p-4 sm:p-5 md:p-8 lg:p-10 overflow-y-auto h-[calc(100vh-73px)] md:h-[calc(100vh-73px)] pb-24 sm:pb-20 md:pb-4" style={{ backgroundColor: 'var(--bg-primary)' }}>
                     <div className="max-w-7xl mx-auto">
                         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
                             <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>

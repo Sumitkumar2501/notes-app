@@ -160,6 +160,16 @@
     @apply active:scale-95;
   }
 
+  /* Touch manipulation - prevents zoom on double-tap on mobile */
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+
+  /* Enable touch manipulation on all interactive elements by default */
+  button, input, textarea, select, a {
+    touch-action: manipulation;
+  }
+
   /* Focus ring styling */
   input:focus, textarea:focus, select:focus {
     outline: none;
@@ -169,6 +179,60 @@
   @media (hover: none) {
     button:hover {
       opacity: 0.9;
+    }
+    
+    /* Larger touch targets on mobile */
+    button, input, textarea, select {
+      min-height: 44px;
+    }
+  }
+
+  /* Desktop hover effects */
+  @media (hover: hover) {
+    button:hover:not(:disabled) {
+      opacity: 0.85;
+    }
+  }
+
+  /* Mobile-specific responsive padding and spacing */
+  @media (max-width: 640px) {
+    main {
+      padding-left: 4px !important;
+      padding-right: 4px !important;
+      padding-bottom: calc(80px + max(env(safe-area-inset-bottom), 8px)) !important;
+    }
+    
+    /* Better mobile button sizing */
+    button {
+      min-height: 40px;
+      padding: 8px 12px;
+    }
+    
+    /* Responsive text sizes */
+    h1 {
+      @apply text-lg;
+    }
+    
+    h2 {
+      @apply text-base;
+    }
+    
+    h3 {
+      @apply text-sm;
+    }
+  }
+
+  /* Tablet responsive adjustments */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    main {
+      padding-bottom: 16px;
+    }
+  }
+
+  /* Desktop - no bottom nav padding needed */
+  @media (min-width: 1025px) {
+    main {
+      padding-bottom: 0;
     }
   }
 

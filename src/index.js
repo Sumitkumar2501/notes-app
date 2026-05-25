@@ -10,13 +10,14 @@ import { ThemeProvider } from './context/theme-context';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ThemeProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <ThemeProvider>
         <NotesProvider>
           <App />
         </NotesProvider>
-      </BrowserRouter>
-    </ThemeProvider>
+      </ThemeProvider>
+    </BrowserRouter>
+
   </React.StrictMode>
 );
 

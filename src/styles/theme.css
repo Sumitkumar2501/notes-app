@@ -75,41 +75,40 @@
 /* Smooth Theme Transitions - Optimized */
 /* Only apply transitions to specific properties that won't cause heavy repaints */
 html {
-    transition: background-color 0.3s ease-in-out;
+    transition: none;
 }
 
 body {
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Core UI elements - smooth color transitions only */
-header, main, section, div, article {
-    transition: background-color 0.3s ease-in-out, 
-                color 0.3s ease-in-out, 
-                border-color 0.3s ease-in-out;
+header, main, section, article, aside {
+    transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Input elements */
+/* Input and button elements - faster transitions */
 input, textarea, select {
-    transition: background-color 0.3s ease-in-out, 
-                color 0.3s ease-in-out, 
-                border-color 0.3s ease-in-out;
+    transition: background-color 0.15s ease-in-out,
+                color 0.15s ease-in-out,
+                border-color 0.15s ease-in-out;
 }
 
-/* Button elements */
 button {
-    transition: background-color 0.3s ease-in-out, 
-                color 0.3s ease-in-out, 
-                border-color 0.3s ease-in-out,
-                box-shadow 0.3s ease-in-out;
+    transition: background-color 0.15s ease-in-out,
+                color 0.15s ease-in-out,
+                border-color 0.15s ease-in-out,
+                box-shadow 0.2s ease-in-out;
 }
 
 /* Card elements */
 .glass-card {
-    transition: background-color 0.3s ease-in-out, 
-                color 0.3s ease-in-out, 
-                border-color 0.3s ease-in-out,
-                box-shadow 0.3s ease-in-out;
+    transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.2s ease-in-out;
 }
 
 /* Prevent transition on specific animated elements */
@@ -128,7 +127,65 @@ button {
     }
 }
 
+/* Toast Animations - Smooth entry and exit */
+@keyframes toast-slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes toast-slide-out {
+    from {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+}
+
+/* Toast responsive positioning */
+.toast-container {
+    position: fixed !important;
+    z-index: 50 !important;
+    pointer-events: none !important;
+}
+
+/* Mobile toast - centered with safe area spacing */
+@media (max-width: 768px) {
+    .toast-container {
+        left: 50% !important;
+        bottom: calc(64px + 16px + max(env(safe-area-inset-bottom), 8px)) !important;
+        transform: translateX(-50%) !important;
+        width: calc(100% - 32px) !important;
+        max-width: 400px !important;
+    }
+    
+    .toast-container > div {
+        margin: 0 auto !important;
+    }
+}
+
+/* Desktop toast - bottom-right positioning */
+@media (min-width: 769px) {
+    .toast-container {
+        bottom: 24px !important;
+        right: 24px !important;
+        left: auto !important;
+        transform: none !important;
+    }
+}
+
 body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
+    /* Safe area support for notched devices */
+    padding-left: max(env(safe-area-inset-left), 0px);
+    padding-right: max(env(safe-area-inset-right), 0px);
 }

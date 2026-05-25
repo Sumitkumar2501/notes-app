@@ -43,19 +43,19 @@ export const Home = () => {
             <Navbar />
             <main className="flex">
                 <SideBar />
-                <div className="flex-1 p-4 sm:p-6 md:p-8 lg:p-10 overflow-y-auto h-[calc(100vh-73px)] md:h-[calc(100vh-73px)] pb-20 md:pb-0" style={{ backgroundColor: 'var(--bg-primary)' }}>
+                <div className="flex-1 p-4 sm:p-5 md:p-8 lg:p-10 overflow-y-auto h-[calc(100vh-73px)] md:h-[calc(100vh-73px)] pb-24 sm:pb-20 md:pb-4" style={{ backgroundColor: 'var(--bg-primary)' }}>
                     <div className="max-w-7xl mx-auto flex flex-col items-center">
                         
                         {/* Note Input Area */}
-                        <div className="w-full max-w-2xl rounded-xl sm:rounded-2xl shadow-sm md:shadow-md border overflow-hidden mb-8 sm:mb-10 md:mb-12 transition-all duration-300 focus-within:shadow-md md:focus-within:shadow-lg focus-within:border-opacity-80" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--border-primary)', boxShadow: 'var(--shadow-md)' }}>
+                        <div className="w-full max-w-2xl rounded-xl sm:rounded-2xl shadow-sm md:shadow-md border overflow-hidden mb-6 sm:mb-10 md:mb-12 transition-all duration-300 focus-within:shadow-md md:focus-within:shadow-lg focus-within:border-opacity-80" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--border-primary)', boxShadow: 'var(--shadow-md)' }}>
                             <input 
                                 id="note-title" 
                                 name="title" 
                                 value={title} 
                                 onChange={onTitleChange}
-                                className="w-full p-3 sm:p-4 text-base sm:text-lg font-semibold focus:outline-none placeholder-opacity-70 transition-colors duration-200"
+                                className="w-full p-3 sm:p-4 text-sm sm:text-lg font-semibold focus:outline-none placeholder-opacity-70 transition-colors duration-200"
                                 placeholder="Title"
-                                style={{ backgroundColor: 'var(--card-bg)', color: 'var(--text-primary)', borderBottom: `1px solid var(--border-primary)` }}
+                                style={{ backgroundColor: 'var(--card-bg)', color: 'var(--text-primary)', borderBottom: `1px solid var(--border-primary)`, minHeight: '48px', display: 'flex', alignItems: 'center' }}
                             />
                             <textarea 
                                 id="note-text" 
@@ -66,12 +66,12 @@ export const Home = () => {
                                 placeholder="Take a note..."
                                 style={{ backgroundColor: 'var(--card-bg)', color: 'var(--text-secondary)' }}
                             />
-                            <div className="flex justify-end p-2 sm:p-3 border-t" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-primary)' }}>
+                            <div className="flex justify-end p-3 sm:p-4 border-t" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-primary)' }}>
                                 <button 
                                     disabled={!title?.trim()} 
                                     onClick={onAddClick} 
-                                    className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 text-white font-medium text-sm sm:text-base rounded-full hover:opacity-85 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md active:scale-95"
-                                    style={{ backgroundColor: 'var(--accent-color)' }}
+                                    className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-2.5 text-white font-medium text-xs sm:text-base rounded-full hover:opacity-85 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md active:scale-95 touch-manipulation"
+                                    style={{ backgroundColor: 'var(--accent-color)', minHeight: '40px' }}
                                 >
                                     <Plus size={16} className="sm:w-[18px] sm:h-[18px]" />
                                     <span>Add Note</span>

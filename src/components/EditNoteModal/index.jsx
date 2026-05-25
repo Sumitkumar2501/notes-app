@@ -95,12 +95,16 @@ export const EditNoteModal = ({ note, isOpen, onClose, onSave }) => {
             <div
                 className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 pointer-events-none"
                 style={{
-                    animation: isAnimating ? 'modalFadeIn 0.3s ease-out' : 'modalFadeOut 0.3s ease-out'
+                    animation: isAnimating ? 'modalFadeIn 0.3s ease-out' : 'modalFadeOut 0.3s ease-out',
+                    paddingBottom: 'max(1rem, calc(64px + 1rem + env(safe-area-inset-bottom)))',
+                    // On mobile, scroll the modal area if needed
+                    overflowY: 'auto',
+                    WebkitOverflowScrolling: 'touch'
                 }}
             >
                 {/* Modal - Re-enables pointer events */}
                 <div
-                    className="w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col rounded-2xl pointer-events-auto"
+                    className="w-full max-w-2xl max-h-[calc(100vh-120px)] sm:max-h-[85vh] overflow-hidden flex flex-col rounded-xl sm:rounded-2xl pointer-events-auto"
                     style={{
                         backgroundColor: 'var(--card-bg)',
                         boxShadow: isAnimating 
