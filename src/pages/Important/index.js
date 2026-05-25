@@ -29,7 +29,7 @@ export const Important = () => {
                     {/* Mobile: Sort bar in normal flow; Desktop: regular layout */}
                     <div className="flex-shrink-0 p-4 sm:p-5 md:p-8 lg:p-10 overflow-visible">
                         <div className="max-w-7xl mx-auto">
-                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 sm:mb-0">
+                            <div className="flex flex-col gap-2 mb-6 sm:mb-0">
                                 <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
                                     <Star className="text-yellow-500 w-5 sm:w-6 h-5 sm:h-6" />
                                     Important Notes
