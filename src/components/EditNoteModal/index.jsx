@@ -1,5 +1,5 @@
 import { X, Check } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import toast from 'react-hot-toast';
 
@@ -27,22 +27,12 @@ export const EditNoteModal = ({ note, isOpen, onClose, onSave }) => {
         };
     }, [note, isOpen]);
 
-    // Handle ESC key
-    useEffect(() => {
-        const handleEscKey = (event) => {
-            if (event.key === 'Escape' && isOpen) {
-                handleCancel();
-            }
-        };
-
-        if (isOpen) {
-            document.addEventListener('keydown', handleEscKey);
-        }
-
-        return () => {
-            document.removeEventListener('keydown', handleEscKey);
-        };
-    }, [isOpen]);
+    // Memoize handleCancel to avoid unnecessary re-renders and effects
+    const handleCancel = useCallback(() => {
+        setEditTitle('');
+        setEditText('');
+        onClose();
+    }, [onClose]);
 
     const handleSave = () => {
         if (!editTitle.trim()) {
@@ -58,17 +48,28 @@ export const EditNoteModal = ({ note, isOpen, onClose, onSave }) => {
         onClose();
     };
 
-    const handleCancel = () => {
-        setEditTitle('');
-        setEditText('');
-        onClose();
-    };
-
     const handleBackdropClick = (e) => {
         if (e.target === e.currentTarget) {
             handleCancel();
         }
     };
+
+    // Handle ESC key – now includes handleCancel as a dependency
+    useEffect(() => {
+        const handleEscKey = (event) => {
+            if (event.key === 'Escape' && isOpen) {
+                handleCancel();
+            }
+        };
+
+        if (isOpen) {
+            document.addEventListener('keydown', handleEscKey);
+        }
+
+        return () => {
+            document.removeEventListener('keydown', handleEscKey);
+        };
+    }, [isOpen, handleCancel]);
 
     if (!isOpen) return null;
 
