@@ -15,7 +15,7 @@ const NotesProvider = ({children}) => {
     const [state, notesDispatch] = useReducer(notesReducer, initialState);
     const [searchQuery, setSearchQuery] = useState('');
 
-    // Load from local storage on mount
+    // Load from local storage on mount only (not on every state change)
     useEffect(() => {
         const savedState = localStorage.getItem('noteIt_state');
         if (savedState) {
@@ -26,13 +26,17 @@ const NotesProvider = ({children}) => {
                 console.error("Failed to parse local storage data", error);
             }
         }
-    }, []);
+    }, []); // Fixed: empty array – run only once on mount
 
-    // Save to local storage on change
+    // Save to local storage only when notes/archive/trash change
     useEffect(() => {
-        const { title, text, ...stateToSave } = state; // Don't save current inputs
+        const stateToSave = {
+            notes: state.notes,
+            archive: state.archive,
+            trash: state.trash
+        };
         localStorage.setItem('noteIt_state', JSON.stringify(stateToSave));
-    }, [state.notes, state.archive, state.trash]);
+    }, [state.notes, state.archive, state.trash]); // Fixed: no direct reference to `state` object
 
     return (
         <NotesContext.Provider value={{ ...state, notesDispatch, searchQuery, setSearchQuery }}>
@@ -43,4 +47,4 @@ const NotesProvider = ({children}) => {
 
 const useNotes = () => useContext(NotesContext);
 
-export { NotesProvider, useNotes }
+export { NotesProvider, useNotes };
