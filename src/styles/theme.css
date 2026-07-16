@@ -36,6 +36,23 @@
     
     --toast-bg: #1c1917;
     --toast-text: #fdfbf9;
+
+    /* Pastel sticky note colors */
+    --note-default: #ffffff;
+    --note-yellow: #fef9c3;
+    --note-orange: #ffedd5;
+    --note-pink: #fce7f3;
+    --note-green: #dcfce7;
+    --note-blue: #e0f2fe;
+    --note-purple: #f3e8ff;
+    
+    --note-border-default: var(--border-primary);
+    --note-border-yellow: #fde047;
+    --note-border-orange: #fdba74;
+    --note-border-pink: #f9a8d4;
+    --note-border-green: #86efac;
+    --note-border-blue: #93c5fd;
+    --note-border-purple: #d8b4fe;
 }
 
 :root[data-theme="dark"] {
@@ -70,6 +87,23 @@
     
     --toast-bg: #f1f5f9;
     --toast-text: #0f172a;
+
+    /* Pastel sticky note colors for Dark Mode */
+    --note-default: #1e293b;
+    --note-yellow: #2d2a15;
+    --note-orange: #2e2015;
+    --note-pink: #2e1823;
+    --note-green: #12281a;
+    --note-blue: #16243b;
+    --note-purple: #231633;
+    
+    --note-border-default: var(--border-primary);
+    --note-border-yellow: #854d0e;
+    --note-border-orange: #7c2d12;
+    --note-border-pink: #701a75;
+    --note-border-green: #166534;
+    --note-border-blue: #1e40af;
+    --note-border-purple: #6b21a8;
 }
 
 /* Smooth Theme Transitions - Optimized */

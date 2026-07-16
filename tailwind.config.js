@@ -4,6 +4,19 @@ module.exports = {
     "./index.html",
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
+  safelist: [
+    'note-default',
+    'note-yellow',
+    'note-orange',
+    'note-pink',
+    'note-green',
+    'note-blue',
+    'note-purple',
+    'font-sans-note',
+    'font-serif-note',
+    'font-handwriting-note',
+    'font-typewriter-note',
+  ],
   theme: {
     extend: {
       colors: {

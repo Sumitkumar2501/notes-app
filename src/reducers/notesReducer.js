@@ -6,17 +6,40 @@ export const notesReducer = (state, {type ,payload})=> {
             return{ ...state, title: payload }
         case 'TEXT':
             return{ ...state, text: payload }
+        case 'COLOR':
+            return{ ...state, color: payload }
+        case 'TYPE':
+            return{ ...state, type: payload }
+        case 'TODOS':
+            return{ ...state, todos: payload }
+        case 'TAGS':
+            return{ ...state, tags: payload }
         case 'ADD_NOTE':
             const now = new Date().toISOString();
             return{
                 ...state,
-                notes: [...state.notes, {text:state.text, title: state.title, id: uuid(), isPinned:false, createdAt: now, updatedAt: now}]
+                notes: [...state.notes, {
+                    id: uuid(), 
+                    isPinned: false, 
+                    createdAt: now, 
+                    updatedAt: now,
+                    title: payload?.title !== undefined ? payload.title : state.title,
+                    text: payload?.text !== undefined ? payload.text : state.text,
+                    color: payload?.color || state.color || 'default',
+                    type: payload?.type || state.type || 'text',
+                    todos: payload?.todos || state.todos || [],
+                    tags: payload?.tags || state.tags || []
+                }]
             }
         case 'CLEAR_INPUT':
             return{
                 ...state,
                 title:'',
-                text:''
+                text:'',
+                color: 'default',
+                type: 'text',
+                todos: [],
+                tags: []
             }
         case 'PIN':
             return{
@@ -70,14 +93,54 @@ export const notesReducer = (state, {type ,payload})=> {
                 ...state,
                 notes: state.notes.map(note => 
                     note.id === payload.id 
-                        ? { ...note, title: payload.title, text: payload.text, updatedAt: new Date().toISOString() } 
+                        ? { 
+                            ...note, 
+                            title: payload.title, 
+                            text: payload.text, 
+                            color: payload.color || note.color || 'default',
+                            type: payload.type || note.type || 'text',
+                            todos: payload.todos || note.todos || [],
+                            tags: payload.tags || note.tags || [],
+                            updatedAt: new Date().toISOString() 
+                          } 
                         : note
                 ),
                 archive: state.archive.map(note => 
                     note.id === payload.id 
-                        ? { ...note, title: payload.title, text: payload.text, updatedAt: new Date().toISOString() } 
+                        ? { 
+                            ...note, 
+                            title: payload.title, 
+                            text: payload.text, 
+                            color: payload.color || note.color || 'default',
+                            type: payload.type || note.type || 'text',
+                            todos: payload.todos || note.todos || [],
+                            tags: payload.tags || note.tags || [],
+                            updatedAt: new Date().toISOString() 
+                          } 
                         : note
                 )
+            }
+        case 'CHANGE_NOTE_COLOR':
+            return {
+                ...state,
+                notes: state.notes.map(note => note.id === payload.id ? { ...note, color: payload.color, updatedAt: new Date().toISOString() } : note),
+                archive: state.archive.map(note => note.id === payload.id ? { ...note, color: payload.color, updatedAt: new Date().toISOString() } : note)
+            }
+        case 'TOGGLE_TODO':
+            const toggleTodoItem = (note) => {
+                if (note.id !== payload.noteId) return note;
+                return {
+                    ...note,
+                    todos: (note.todos || []).map(todo => 
+                        todo.id === payload.todoId ? { ...todo, isCompleted: !todo.isCompleted } : todo
+                    ),
+                    updatedAt: new Date().toISOString()
+                };
+            };
+            return {
+                ...state,
+                notes: state.notes.map(toggleTodoItem),
+                archive: state.archive.map(toggleTodoItem)
             }
         case 'SET_STATE':
             return {

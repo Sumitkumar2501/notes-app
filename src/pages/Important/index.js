@@ -6,17 +6,22 @@ import { useNotes } from "../../context/notes-context";
 import { NotesCard } from "../../components/NotesCard";
 import { EmptyState } from "../../components/EmptyState";
 import { SortDropdown } from "../../components/SortDropdown";
-import { Star } from "lucide-react";
+import { Star, Hash } from "lucide-react";
 import { sortNotes } from "../../utils/sortNotes";
 
 export const Important = () => {
-    const { notes, searchQuery } = useNotes();
+    const { notes, searchQuery, selectedTag, setSelectedTag } = useNotes();
     const [sortBy, setSortBy] = useState('newest');
     
-    const importantNotes = notes?.filter(note => note.isPinned && 
-        (note.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-         note.text.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
+    const importantNotes = notes?.filter(note => {
+        const matchesPinned = note.isPinned;
+        const matchesSearch = 
+            note.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+            note.text.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesTag = !selectedTag || (note.tags && note.tags.includes(selectedTag));
+        
+        return matchesPinned && matchesSearch && matchesTag;
+    }) || [];
 
     const sortedImportantNotes = sortNotes(importantNotes, sortBy);
 
@@ -44,10 +49,30 @@ export const Important = () => {
                     {/* Notes container with scrolling on mobile */}
                     <div className="flex-1 overflow-y-auto p-4 sm:p-5 md:p-8 lg:p-10 pb-24 sm:pb-20 md:pb-4">
                         <div className="max-w-7xl mx-auto">
+                            {/* Label Tag Filter Banner */}
+                            {selectedTag && (
+                                <div className="flex items-center gap-1.5 mb-6 animate-fade-in">
+                                    <span 
+                                        className="text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5" 
+                                        style={{ backgroundColor: 'var(--accent-light)', color: 'var(--accent-color)', border: '1px solid var(--border-primary)' }}
+                                    >
+                                        <Hash size={12} />
+                                        {selectedTag}
+                                        <button 
+                                            onClick={() => setSelectedTag(null)} 
+                                            className="hover:text-red-500 font-bold ml-1 text-sm leading-none"
+                                            title="Clear filter"
+                                        >
+                                            ×
+                                        </button>
+                                    </span>
+                                </div>
+                            )}
+
                             {sortedImportantNotes?.length > 0 ? (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6 md:gap-8 lg:gap-10 animate-slide-up auto-rows-max">
-                                    {sortedImportantNotes.map(({ id, title, text, isPinned, createdAt, updatedAt }) => (
-                                        <NotesCard key={id} id={id} title={title} text={text} isPinned={isPinned} createdAt={createdAt} updatedAt={updatedAt} />
+                                    {sortedImportantNotes.map((note) => (
+                                        <NotesCard key={note.id} {...note} />
                                     ))}
                                 </div>
                             ) : (

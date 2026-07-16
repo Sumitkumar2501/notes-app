@@ -34,16 +34,10 @@ export const Trash = () => {
                         
                         {trashNotes?.length > 0 ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6 md:gap-8 lg:gap-10 animate-slide-up auto-rows-max">
-                                {trashNotes.map(({ id, title, text, isPinned, deletedAt, createdAt, updatedAt }) => (
+                                {trashNotes.map((note) => (
                                     <NotesCard 
-                                        key={id} 
-                                        id={id} 
-                                        title={title} 
-                                        text={text} 
-                                        isPinned={isPinned}
-                                        deletedAt={deletedAt}
-                                        createdAt={createdAt}
-                                        updatedAt={updatedAt}
+                                        key={note.id} 
+                                        {...note}
                                         isTrash={true} 
                                     />
                                 ))}

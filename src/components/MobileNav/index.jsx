@@ -1,8 +1,10 @@
 import { Home, Archive, Star, Trash2 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { memo } from 'react';
+import { useNotes } from '../../context/notes-context';
 
 const MobileNavComponent = () => {
+    const { setSelectedTag } = useNotes();
     const navItems = [
         { to: '/', icon: Home, label: 'Notes' },
         { to: '/important', icon: Star, label: 'Important' },
@@ -26,6 +28,7 @@ const MobileNavComponent = () => {
                     <NavLink
                         key={item.to}
                         to={item.to}
+                        onClick={() => setSelectedTag(null)} // Clear tag filter on page change
                         className="flex flex-col items-center justify-center w-full h-full gap-1 transition-all duration-200 relative"
                         style={({ isActive }) => ({
                             color: isActive ? 'var(--accent-color)' : 'var(--text-tertiary)',
