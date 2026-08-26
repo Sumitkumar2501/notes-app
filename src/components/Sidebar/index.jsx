@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Archive, Star, Trash2, Tag, Hash } from 'lucide-react';
+import { Home, Archive, Star, Trash2, Hash } from 'lucide-react';
 import { memo } from 'react';
 import { useNotes } from '../../context/notes-context';
 
